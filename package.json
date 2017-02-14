@@ -1,0 +1,22 @@
+{
+  "name": "waker",
+  "version": "0.0.1",
+  "description": "Waker is an easy RESTful web service maker",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pixelsandcode/waker.git"
+  },
+  "author": "Reza Gholamzadeh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pixelsandcode/waker/issues"
+  },
+  "homepage": "https://github.com/pixelsandcode/waker#readme",
+  "preferGlobal": true,
+  "bin": {
+    "waker": "src/main.js"
+  }
+}
