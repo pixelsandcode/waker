@@ -1,0 +1,69 @@
+default:
+  plugins:
+    icecreambar:
+      enable: false
+      api_key: your_key
+    lout:
+      enable: false
+    hapi_io:
+      enable: false
+    hapi_graceful_pm2:
+      enable: false
+    hapi_auth_jwt2:
+      enable: false
+      key: your_secret_key
+      expiration: 60 #seconds
+      cache_prefix: "token:"
+    hapi_auth_cookie:
+      enable: false
+      password: you_secret_password
+    hapi_ratelimiter:
+      enable: false
+      namespace: "my_app:limiter:"
+      limit: 10000
+      duration: "10 seconds"
+    bell:
+      enabled: false
+      mock: false
+      trace: false
+      dump: false
+      dump_path: /path/for/dump/files
+      route_prefix: notification
+      namespace: notification
+      label: notification
+      templates: /path/to/notification/templates
+      gcm: your_gcm_key
+      database: your_database_name
+    postoffice:
+      enabled: false
+      mock: true
+      trace: true
+      dump: true
+      dump_path: /path/for/dump/files
+      api_key: your_mailgun_api_key
+      domain: your_domain
+      from: from_on_mail_header
+      label: mail
+      root: /path/to/root/of/mail/templates
+      trigger_events:
+        event_one:
+          template: /path/to/event_one/template
+          subject: event_one_default_subject
+  methods:
+    postoffice:
+      enable: false
+      server: 127.0.0.1
+      port: 3400
+    bell:
+      enable: false
+      server: 127.0.0.1
+      port: 3300
+    jobs:
+      enable: false
+      kue_prefix: 'kue'
+    model:
+      enable: false
+    redis:
+      enable: false
+    reply_decorators:
+      enabled: false

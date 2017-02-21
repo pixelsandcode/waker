@@ -1,0 +1,3 @@
+{
+  "glob": ["src/**/*.js", "README.md"]
+}

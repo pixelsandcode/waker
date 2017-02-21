@@ -1,0 +1,28 @@
+default:
+  app: <%= app %>
+  url: <%= url %>
+  scheme: <%= scheme %>
+  server:
+    sampling: <%= server_sampling %>
+    host: <%= server_host %>
+    port: <%= server_port %>
+    timeout: <%= server_timeout %>
+  databases:
+    application:
+      host: <%= database_host %>
+      name: <%= database_name %>
+      mock: false
+  searchengine:
+    application:
+      host: <%= searchengine_host %>
+      port: <%= searchengine_port %>
+      name: <%= searchengine_name %>
+      log: debug # error, warning, info, debug, trace
+  cache:
+    host: <%= cache_host %>
+    port: <%= cache_port %>
+development:
+functionaltest:
+unittest:
+production:
+staging:
