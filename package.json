@@ -1,6 +1,6 @@
 {
   "name": "waker",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Waker is an easy RESTful web service maker",
   "main": "src/server",
   "scripts": {
@@ -16,7 +16,6 @@
     "url": "https://github.com/pixelsandcode/waker/issues"
   },
   "homepage": "https://github.com/pixelsandcode/waker#readme",
-  "preferGlobal": true,
   "bin": {
     "waker": "cli/main.js"
   },

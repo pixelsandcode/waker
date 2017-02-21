@@ -13,6 +13,7 @@ if(argv.stage != 'deploy') {
       'name': "name of module to be created"
     }
   })
+  gulp.task("api:run", "Running server", require('tasks/run'))
 }
 gulp.task("api:link", "Link all plugin folders to main api folder as a dependency.", require('task/link'), {
   options: {

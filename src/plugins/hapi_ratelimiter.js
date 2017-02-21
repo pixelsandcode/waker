@@ -3,7 +3,7 @@ let Promise = require('bluebird')
 
 module.exports = (server, config, cache_config) => {
   return new Promise( (resolve, reject) => {
-    if (config.enabled)
+    if(config.enabled)
       server.register([
         {
           register: require('hapi-ratelimiter'),

@@ -27,7 +27,7 @@ let methods = (server, config) => {
 
 module.exports = (server, config) => {
   return new Promise( (resolve, reject) => {
-    if (config.enabled) {
+    if(config.enabled) {
       server.register([
         { register: require('hapi-auth-jwt2') }
       ], (err) => {

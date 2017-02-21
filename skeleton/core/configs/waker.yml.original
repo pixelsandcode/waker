@@ -1,24 +1,24 @@
 default:
   plugins:
     icecreambar:
-      enable: false
+      enabled: false
       api_key: your_key
     lout:
-      enable: false
+      enabled: false
     hapi_io:
-      enable: false
+      enabled: false
     hapi_graceful_pm2:
-      enable: false
+      enabled: false
     hapi_auth_jwt2:
-      enable: false
+      enabled: false
       key: your_secret_key
       expiration: 60 #seconds
       cache_prefix: "token:"
     hapi_auth_cookie:
-      enable: false
+      enabled: false
       password: you_secret_password
     hapi_ratelimiter:
-      enable: false
+      enabled: false
       namespace: "my_app:limiter:"
       limit: 10000
       duration: "10 seconds"
@@ -51,19 +51,19 @@ default:
           subject: event_one_default_subject
   methods:
     postoffice:
-      enable: false
+      enabled: false
       server: 127.0.0.1
       port: 3400
     bell:
-      enable: false
+      enabled: false
       server: 127.0.0.1
       port: 3300
     jobs:
-      enable: false
+      enabled: false
       kue_prefix: 'kue'
     model:
-      enable: false
+      enabled: false
     redis:
-      enable: false
+      enabled: false
     reply_decorators:
       enabled: false

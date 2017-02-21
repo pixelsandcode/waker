@@ -1,5 +1,5 @@
 {
-  "script": "./server",
+  "script": "./server.js",
   "watch": [".", "../modules"],
   "ignore": ["node_modules/", "test/"],
   "ext": "js jade yml json scss"
