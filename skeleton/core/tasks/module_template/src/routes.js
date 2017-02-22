@@ -6,7 +6,7 @@ module.exports = (server, options) => {
       method: 'GET',
       path: '/v1/<%= name %>',
       config: {
-        handler: < %= cName % >.list,
+        handler: <%= cName %>.list,
         description: 'TODO: System generated this',
         tags: ['system', 'TODO']
       }

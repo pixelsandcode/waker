@@ -24,7 +24,7 @@ module.exports = () => {
   console.log("This will take a while to install npms and link below plugin(s):")
   var cmds = _.map(modules, (n, p) => {
     console.log(` - ${n}`)
-    return `cd modules/${p} && ${doer} npm install && ${doer} npm link . && cd ../../core && ${doer} npm link ${n}`
+    return `cd ../modules/${p} && ${doer} npm install && ${doer} npm link . && cd ../../core && ${doer} npm link ${n}`
   })
   let cmd = cmds.join(' && ')
   gulp.src(root)

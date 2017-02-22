@@ -30,6 +30,7 @@ module.exports = () => {
     stderr: true,
     stdout: true
   }
+  let appName = "<%= app %>"
   if( !fs.existsSync(path_name) ) {
     gulp.src(templates+'/**')
       .pipe( exec(`mkdir -p ${path_name}`, {continueOnError: false}) )
@@ -38,8 +39,9 @@ module.exports = () => {
       .pipe( gulp.dest(path_name) )
       .on('end', () => {
         update_modules(appName, name)
+        console.log("Please wait to link new module ...")
         gulp.src(root)
-          .pipe( exec(`cd core && gulp api:link -n ${name}`, {continueOnError: false}) )
+          .pipe( exec(`gulp api:link -n ${name}`, {continueOnError: false}) )
           .pipe( exec.reporter(reportOptions) )
       })
   }

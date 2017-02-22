@@ -16,20 +16,29 @@ module.exports = (server, config) => {
       {
         register: require('hapi-redis'),
         options: {
-          host: config.cache.host,
-          port: config.cache.port,
-          opts: { parser: "javascript" }
+          connection: {
+            host: config.cache.host,
+            port: config.cache.port,
+            opts: { parser: "javascript" }
+          }
         }
       },
       {
         register: require('good'),
         options : {
-          reporters: [
-            {
-              reporter: require('good-console'),
-              events: { log: '*', response: '*' }
-            }
-          ]
+          reporters: {
+            console: [
+              {
+                module: 'good-squeeze',
+                name: 'Squeeze',
+                args: [{ log: '*', response: '*' }]
+              },
+              {
+                module: 'good-console'
+              },
+              'stdout'
+            ]
+          }
         }
       }
     ], (err) => {

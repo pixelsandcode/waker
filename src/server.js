@@ -3,24 +3,24 @@ let Hapi = require('hapi')
 let Yaml = require('yml')
 
 module.exports = (config_path) => {
-  let config = Yaml.load(`${__dirname}/${config_path}/config.yml`)
-  let waker_config = Yaml.load(`${__dirname}/${config_path}/waker.yml`)
+  let config = Yaml.load(`${config_path}/configs.yml`)
+  let waker_config = Yaml.load(`${config_path}/waker.yml`)
   let server = new Hapi.Server({
-    port: config.server.port,
     connections: {
       load: {
-        maxEventLoopDelay: config.server.api.timeout
+        maxEventLoopDelay: config.server.timeout
       }
     },
     cache: {
       engine: require('catbox-redis'),
       host: config.cache.host,
-      port: config.cache.port,
-      load: {
-        sampleInterval: config.server.sampling
-      }
+      port: config.cache.port
+    },
+    load: {
+      sampleInterval: config.server.sampling
     }
   })
+  server.connection({ port: config.server.port })
   let load = () => {
     let methods = waker_config.methods
     if(methods.model.enabled) require(`${__dirname}/methods/model`)(server, config)

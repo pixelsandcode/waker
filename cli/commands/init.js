@@ -4,6 +4,7 @@ let chalk    = require('chalk')
 let inquirer = require('inquirer')
 let gulp     = require('gulp')
 let template = require('gulp-template')
+let exec     = require('gulp-exec')
 let _        = require('lodash')
 let merge    = require('merge-stream')
 let Promise  = require('bluebird')
@@ -24,6 +25,11 @@ exports.handler = function (argv) {
     })
     .then( () => {
       console.log("Waker initiation finished!")
+      console.log("Please wait to install core npms ...")
+      return privates.install_npms()
+    })
+    .then( () => {
+      console.log("Core npms are installed. Enjoy! :)")
     })
 }
 
@@ -162,13 +168,29 @@ let privates = {
     result.name = "<%= name %>"
     result.cName = "<%= cName %>"
     result.interpolate_regex = '<%=([\\s\\S]+?)%>'
-    privates.render(src,dest,result)
+    return privates.render(src, dest, result)
   },
   render(src, dest, data) {
     return new Promise( (resolve, reject) => {
       gulp.src(src, { dot: true })
         .pipe(template(data, {interpolate: /<%=([\s\S]+?)%>/g}))
         .pipe(gulp.dest(dest))
+        .on('end', () => {
+          resolve()
+        })
+    })
+  },
+  install_npms() {
+    return new Promise( (resolve, reject) => {
+      let root = `${__dirname}/../../../..`
+      let reportOptions = {
+        err: true,
+        stderr: true,
+        stdout: true
+      }
+      gulp.src(root)
+        .pipe( exec(`cd core && npm install`, {continueOnError: false}) )
+        .pipe( exec.reporter(reportOptions) )
         .on('end', () => {
           resolve()
         })

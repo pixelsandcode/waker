@@ -2,7 +2,7 @@
 Waker (Web service maker) is a tool to create RESTful API servers. Waker is using (Hapi.js, Couchbase, Elastisearch, Redis) stack. 
 
 ## Install
-`npm install --save waker`
+`npm install waker`
 
 ## Initiate new web service
 In your project's root directory run:
