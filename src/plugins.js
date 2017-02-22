@@ -1,6 +1,6 @@
 "use strict"
 
-module.exports = (server, config, waker_config) => {
+module.exports = (server, config, waker_config, user_plugins, modules_loader) => {
   let plugins = waker_config.plugins
   require('./plugins/default')(server, config)
     .then( () => {
@@ -29,6 +29,12 @@ module.exports = (server, config, waker_config) => {
     })
     .then( () => {
       return require('./plugins/postoffice')(server, plugins.postoffice, config)
+    })
+    .then( () => {
+      return require('./plugins/user_plugins')(server, user_plugins)
+    })
+    .then( () => {
+      return modules_loader(server)
     })
     .then( () => {
       server.start( () => {

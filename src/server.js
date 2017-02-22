@@ -5,6 +5,9 @@ let Yaml = require('yml')
 module.exports = (config_path) => {
   let config = Yaml.load(`${config_path}/configs.yml`)
   let waker_config = Yaml.load(`${config_path}/waker.yml`)
+  let user_plugins = require(`${config_path}/plugins`)
+  let user_methods = require(`${config_path}/methods`)
+  let modules_loader = require(`${config_path}/modules`)
   let server = new Hapi.Server({
     connections: {
       load: {
@@ -30,7 +33,8 @@ module.exports = (config_path) => {
     if(methods.postoffice.enabled) require(`${__dirname}/methods/postoffice`)(server, methods.postoffice)
     require(`${__dirname}/methods/json`)(server)
     require(`${__dirname}/decorators/reply`)(server)
-    require(`./plugins`)(server, config, waker_config)
+    user_methods(server)
+    require(`./plugins`)(server, config, waker_config, user_plugins, modules_loader)
   }
   let callback = (key) => {
     return () => {

@@ -1,5 +1,5 @@
 # Waker
-Waker (Web service maker) is a tool to create RESTful API servers. Waker is using (Hapi.js, Couchbase, Elastisearch, Redis) stack. 
+Waker (**W**eb service m**aker**) is a tool to create RESTful API servers. Waker is using (Hapi.js, Couchbase, Elastisearch, Redis) stack. 
 
 ## Install
 `npm install waker`
@@ -92,7 +92,7 @@ unittest:
       mock: true
 ```
  
-### Enable per-defined Hapi.js modules and server methods
+### Enable pre-defined Hapi.js modules and server methods
 There are some Hapi.js modules which are integrated to waker. You can enable them by setting `enable: true` for each module on `core/configs/waker.yml`. 
 If any module is enabled, its other configurations also should be set. 
 For example if you want to enable `icecreambar` plugin to connect your service to your rollbar account, and your api key is `12345678`, you should set this configuration:
@@ -152,7 +152,7 @@ For example if you want to create a module with name `users`, you should run:
 - `gulp api:module:create -n users`
 
 ## Link modules to core module
-Linking modules are done automatically. Also you can link modules to core module manually by running the following command:
+Linking modules is done automatically. Also you can link modules to core module manually by running the following command:
 - `gulp api:link`
 
 To link a specific module, run:

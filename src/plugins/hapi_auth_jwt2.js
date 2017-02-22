@@ -7,7 +7,8 @@ let validate = (server, config) => {
     let redis = server.plugins['hapi-redis'].client
     let key = `${config.cache_prefix}${request.auth.token}`
     redis.get(key, (err, value) => {
-      if(err) return callback(null, true)
+      if(err) return callback(err)
+      if(value === null) return callback(null, true)
       callback(null, false)
     })
   }
