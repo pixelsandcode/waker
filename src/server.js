@@ -29,9 +29,8 @@ module.exports = (config_path) => {
     if(methods.bell.enabled) require(`${__dirname}/methods/bell`)(server, methods.bell)
     if(methods.postoffice.enabled) require(`${__dirname}/methods/postoffice`)(server, methods.postoffice)
     require(`${__dirname}/methods/json`)(server)
-    if(methods.reply_decorators.enabled) require(`${__dirname}/decorators/reply`)(server)
+    require(`${__dirname}/decorators/reply`)(server)
     require(`./plugins`)(server, config, waker_config)
-    server.route( require('./routes')(server, config) )
   }
   let callback = (key) => {
     return () => {
@@ -71,6 +70,9 @@ module.exports = (config_path) => {
         else
           v.instance = new require('puffer')(v)
       }
+    },
+    health(health_script) {
+      server.route( require('./routes')(server, config, health_script) )
     }
   }
 }

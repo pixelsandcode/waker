@@ -3,8 +3,8 @@ module.exports = (server, options) => {
 
   return [
     {
-      method: 'GET'
-      path: '/v1/<%= name %>'
+      method: 'GET',
+      path: '/v1/<%= name %>',
       config: {
         handler: < %= cName % >.list,
         description: 'TODO: System generated this',

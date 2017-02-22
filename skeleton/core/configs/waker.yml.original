@@ -65,5 +65,3 @@ default:
       enabled: false
     redis:
       enabled: false
-    reply_decorators:
-      enabled: false

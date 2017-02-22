@@ -1,12 +1,12 @@
 {
-  "name": "<%= appName %>.<%= name %>",
-  "description": "<%= appName %> <%= cName %> Module",
+  "name": "<%= app %>.<%= name %>",
+  "description": "<%= app %> <%= cName %> Module",
   "version": "0.1.0",
   "main": "init",
   "engines": {
     "node": "6.9.*"
   },
-  "author": "waker",
+  "author": "<%= author %>",
   "dependencies": {
     "boom": "^4.2.0",
     "joi": "^10.2.2",

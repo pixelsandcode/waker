@@ -1,6 +1,6 @@
 {
   "name": "waker",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "Waker is an easy RESTful web service maker",
   "main": "src/server",
   "scripts": {
@@ -27,6 +27,8 @@
     "figlet": "^1.2.0",
     "good": "^7.1.0",
     "good-console": "^6.4.0",
+    "gulp": "^3.9.1",
+    "gulp-template": "^4.0.0",
     "hapi": "^16.1.0",
     "hapi-auth-jwt2": "^7.2.4",
     "hapi-graceful-pm2": "^1.0.15",
@@ -39,6 +41,7 @@
     "jsonwebtoken": "^7.3.0",
     "kue": "^0.11.5",
     "lodash": "^4.17.4",
+    "merge-stream": "^1.0.1",
     "moment": "^2.17.1",
     "puffer": "^1.1.0",
     "redis": "^2.6.5",

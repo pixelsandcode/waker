@@ -30,13 +30,11 @@ module.exports = () => {
     stderr: true,
     stdout: true
   }
-  let configs = Yaml.load(__dirname + "/../configs/configs.yml")
-  let appName = configs.app
   if( !fs.existsSync(path_name) ) {
     gulp.src(templates+'/**')
       .pipe( exec(`mkdir -p ${path_name}`, {continueOnError: false}) )
       .pipe( exec.reporter(reportOptions) )
-      .pipe( template({ name, cName, appName }) )
+      .pipe( template({ name, cName }, {interpolate: /<%=interpolate_regex%>/g}) )
       .pipe( gulp.dest(path_name) )
       .on('end', () => {
         update_modules(appName, name)

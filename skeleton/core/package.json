@@ -1,7 +1,7 @@
 {
-  "name": "<%= appName %>",
+  "name": "<%= app %>",
   "version": "1.0.0",
-  "description": "<%= appName %> system",
+  "description": "<%= app %> system",
   "main": "./server",
   "scripts": {
     "start": "gulp api:run"
@@ -11,7 +11,7 @@
     "url": "<%= repository %>"
   },
   "keywords": [
-    "<%= appName %>"
+    "<%= app %>"
   ],
   "author": "<%= author %>",
   "license": "ISC",
