@@ -9,7 +9,7 @@ module.exports = (server, config) => {
       source = new require('puffer')({}, true)
     else
       source = require('puffer').instances[config.databases[db].name]
-    return require('odme').cb({
+    return require('odme').CB({
       source: source,
       es_host: config.searchengine[db].host,
       es_port: config.searchengine[db].port,

@@ -93,9 +93,11 @@ unittest:
 ```
  
 ### Enable pre-defined Hapi.js modules and server methods
-There are some Hapi.js modules which are integrated to waker. You can enable them by setting `enable: true` for each module on `core/configs/waker.yml`. 
+There are some Hapi.js modules which are integrated to waker. 
+You can enable them by setting `enable: true` for each module on `core/configs/waker.yml`. 
 If any module is enabled, its other configurations also should be set. 
-For example if you want to enable `icecreambar` plugin to connect your service to your rollbar account, and your api key is `12345678`, you should set this configuration:
+For example if you want to enable `icecreambar` plugin to connect your service to your rollbar account, 
+and your api key is `12345678`, you should set this configuration:
 ```yaml
 default:
   plugins:
@@ -110,6 +112,7 @@ default:
     model:
       enabled: true
 ```
+To set configurations correctly refer to plugins' official documentations and to check plugin version, run `node_modules/.bin/waker plugins` in your project root.
 
 ## Running server
 To run server in development environment, go to `core` directory and run:
