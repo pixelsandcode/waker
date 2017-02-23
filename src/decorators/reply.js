@@ -22,7 +22,7 @@ module.exports = (server) => {
     return this.response( Boom.conflict(message) )
   })
 
-  server.decorate('reply', 'not_found', function(message) {
+  server.decorate('reply', 'notFound', function(message) {
     return this.response( Boom.notFound(message) )
   })
 
@@ -38,7 +38,7 @@ module.exports = (server) => {
     return this.nice( server.methods.json.mask(data, mask) )
   })
 
-  server.decorate('reply', 'cross_html', function(callback, content) {
+  server.decorate('reply', 'crossHtml', function(callback, content) {
     content = content.replace(/"/g, '\\"').replace(/(\r\n|\n|\r)/gm, '')
     return this.response(`${callback}(\"${content}\")`)
   })
