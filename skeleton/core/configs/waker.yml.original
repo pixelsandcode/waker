@@ -12,8 +12,11 @@ default:
     hapi_auth_jwt2:
       enabled: false
       key: your_secret_key
-      expiration: 60 #seconds
+      expiration: 600 #seconds
       cache_prefix: "token:"
+      allow_renew: false
+      renew_threshold: 60 #remaining seconds
+      algorithms: ['HS384']
     hapi_auth_cookie:
       enabled: false
       password: you_secret_password

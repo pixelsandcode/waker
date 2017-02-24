@@ -1,6 +1,7 @@
 "use strict"
-let Jwt = require('jsonwebtoken')
+let Jwt     = require('jsonwebtoken')
 let Promise = require('bluebird')
+let moment  = require('moment')
 
 let validate = (server, config) => {
   return (decoded, request, callback) => {
@@ -15,14 +16,26 @@ let validate = (server, config) => {
 }
 
 let methods = (server, config) => {
-  server.method('jwt.create', (data) => {
-    return Jwt.sign(data, config.key, { expiresIn: config.expiration })
+  server.method('jwt.create', (data, expire = config.expiration) => {
+    return Jwt.sign(data, config.key, { expiresIn: expire })
   })
 
   server.method('jwt.block', (token) => {
+    let decoded = Jwt.decode(token, config.key)
     let redis = server.plugins['hapi-redis'].client
     let key = `${config.cache_prefix}${token}`
-    redis.multi().set(key, "blocked").expire(key, config.expiration).exec()
+    let expiration = decoded.exp - moment().unix()
+    redis.multi().set(key, "blocked").expire(key, expiration).exec()
+  })
+
+  server.method('jwt.renew', (token, expire = config.expiration) => {
+    if(!config.allow_renew) throw new Error('Renewing tokens is not allowed')
+    let decoded = Jwt.decode(token, config.key)
+    if( (decoded.exp - moment().unix()) > config.renew_threshold ) return token
+    server.methods.jwt.block(token, decoded)
+    delete decoded.iat
+    delete decoded.exp
+    return server.methods.jwt.create(decoded, expire)
   })
 }
 
@@ -36,7 +49,7 @@ module.exports = (server, config) => {
         server.auth.strategy('jwt', 'jwt', {
           key: config.key,
           validateFunc: validate(server, config),
-          verifyOptions: { algorithms: [ 'HS256' ] }
+          verifyOptions: { algorithms: config.algorithms }
         })
         methods(server, config)
         resolve(true)
@@ -45,4 +58,3 @@ module.exports = (server, config) => {
     else resolve(true)
   })
 }
-
