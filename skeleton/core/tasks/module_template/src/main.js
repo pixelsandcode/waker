@@ -7,5 +7,6 @@ module.exports = (server, options, next) => {
   _.merge(options, defaults)
   server.route( require('./routes')(server, options) )
   require('./methods')(server, options)
+  require('./environments/main')(server, options)
   next()
 }

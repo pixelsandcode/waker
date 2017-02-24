@@ -25,7 +25,10 @@ project_root
 │   ├── tasks
 │   │   ├── module_template
 │   │   │   ├── src
+│   │   │   │   ├── environments
 │   │   │   │   ├── handlers
+│   │   │   │   ├── models
+│   │   │   │   ├── validators
 │   │   │   │   ├── .npmignore
 │   │   │   │   ├── defaults.yml
 │   │   │   │   ├── main.js
