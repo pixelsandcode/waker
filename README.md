@@ -55,7 +55,7 @@ project_root
 │   ├── module_one
 │   ├── module_two
 │   └── ...
-└── .gitignore
+└── .gitignore.original
 ```
 
 ## Configure your service
@@ -65,6 +65,8 @@ There are two main configuration files which should be configured properly befor
 - Copy `core/configs/waker.yml.original` to `core/configs/waker.yml`
 
 Now you can edit the new files to configure your server.
+
+There is a file named `.gitignore.original` which includes recommended `.gitignore` file content. Use can use or ignore it.
 
 ### Add new database configuration
 Databases should be added to `defaults.databases` on `core/configs/config.yml`. For example:
