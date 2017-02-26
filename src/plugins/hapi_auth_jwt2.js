@@ -9,28 +9,49 @@ let validate = (server, config) => {
     let key = `${config.cache_prefix}${request.auth.token}`
     redis.get(key, (err, value) => {
       if(err) return callback(err)
-      if(value === null) return callback(null, true)
-      callback(null, false)
+      if(!(decoded.exp == null || decoded.exp == undefined )) {
+        if(value === null) return callback(null, true)
+        callback(null, false)
+      }
+      else {
+        if(value === null) return callback(null, false)
+        callback(null, true)
+      }
     })
   }
 }
 
 let methods = (server, config) => {
+
   server.method('jwt.create', (data, expire = config.expiration) => {
     return Jwt.sign(data, config.key, { expiresIn: expire })
+  })
+
+  server.method('jwt.createNonExpire', (data) => {
+    let redis = server.plugins['hapi-redis'].client
+    let token = Jwt.sign(data, config.key)
+    let key = `${config.cache_prefix}${token}`
+    redis.set(key, 'valid')
+    return token
   })
 
   server.method('jwt.block', (token) => {
     let decoded = Jwt.decode(token, config.key)
     let redis = server.plugins['hapi-redis'].client
     let key = `${config.cache_prefix}${token}`
-    let expiration = decoded.exp - moment().unix()
-    redis.multi().set(key, "blocked").expire(key, expiration).exec()
+    if(!(decoded.exp == null || decoded.exp == undefined )) {
+      let expiration = decoded.exp - moment().unix()
+      redis.multi().set(key, "blocked").expire(key, expiration).exec()
+    }
+    else {
+      redis.del(key)
+    }
   })
 
   server.method('jwt.renew', (token, expire = config.expiration) => {
     if(!config.allow_renew) throw new Error('Renewing tokens is not allowed')
     let decoded = Jwt.decode(token, config.key)
+    if(decoded.exp == null || decoded.exp == undefined) return token
     if( (decoded.exp - moment().unix()) > config.renew_threshold ) return token
     server.methods.jwt.block(token, decoded)
     delete decoded.iat
