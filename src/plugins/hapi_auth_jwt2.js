@@ -24,12 +24,12 @@ let validate = (server, config) => {
 let methods = (server, config) => {
 
   server.method('jwt.create', (data, expire = config.expiration) => {
-    return Jwt.sign(data, config.key, { expiresIn: expire })
+    return Jwt.sign(data, config.key, { expiresIn: expire, algorithm: config.algorithm })
   })
 
   server.method('jwt.createNonExpire', (data) => {
     let redis = server.plugins['hapi-redis'].client
-    let token = Jwt.sign(data, config.key)
+    let token = Jwt.sign(data, config.key, { algorithm: config.algorithm })
     let key = `${config.cache_prefix}${token}`
     redis.set(key, 'valid')
     return token
@@ -70,7 +70,7 @@ module.exports = (server, config) => {
         server.auth.strategy('jwt', 'jwt', {
           key: config.key,
           validateFunc: validate(server, config),
-          verifyOptions: { algorithms: config.algorithms }
+          verifyOptions: { algorithms: [config.algorithm] }
         })
         methods(server, config)
         resolve(true)

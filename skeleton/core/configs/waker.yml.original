@@ -16,7 +16,7 @@ default:
       cache_prefix: "token:"
       allow_renew: false
       renew_threshold: 60 #remaining seconds
-      algorithms: ['HS384']
+      algorithm: HS384
     hapi_auth_cookie:
       enabled: false
       password: you_secret_password
