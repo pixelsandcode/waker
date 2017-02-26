@@ -56,11 +56,11 @@ default:
   methods:
     postoffice:
       enabled: false
-      server: 127.0.0.1
+      host: http://localhost
       port: 3400
     bell:
       enabled: false
-      server: 127.0.0.1
+      host: http://localhost
       port: 3300
     jobs:
       enabled: false
