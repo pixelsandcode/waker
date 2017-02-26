@@ -26,7 +26,7 @@ exports.handler = function (argv) {
     })
     .then( () => {
       console.log("Waker initiation finished!")
-      return console.log("Please wait to install core npms ...")
+      console.log("Please wait to install core npms ...")
       return privates.install_npms()
     })
     .then( () => {
