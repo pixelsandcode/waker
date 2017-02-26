@@ -183,14 +183,14 @@ let privates = {
   },
   install_npms(path = '.') {
     return new Promise( (resolve, reject) => {
-      let root = `${__dirname}/../../../../${path}`
+      let root = `${__dirname}/../../../..`
       let reportOptions = {
         err: true,
         stderr: true,
         stdout: true
       }
       gulp.src(root)
-        .pipe( exec(`cd core && npm install`, {continueOnError: false}) )
+        .pipe( exec(`cd ${path}/core && npm install`, {continueOnError: false}) )
         .pipe( exec.reporter(reportOptions) )
         .on('end', () => {
           resolve()

@@ -27,6 +27,7 @@ default:
       duration: "10 seconds"
     bell:
       enabled: false
+      database: application
       mock: false
       trace: false
       dump: false
@@ -36,9 +37,9 @@ default:
       label: notification
       templates: /path/to/notification/templates
       gcm: your_gcm_key
-      database: your_database_name
     postoffice:
       enabled: false
+      database: application
       mock: true
       trace: true
       dump: true

@@ -5,9 +5,8 @@ let _       = require('lodash')
 module.exports = (server, config, system) => {
   return new Promise( (resolve, reject) => {
     if(config.enabled) {
-      let database_names = _.map(system.databases, (db) => { return db.name })
-      if(database_names.indexOf(config.database) < 0) return reject(new Error(`There is no configured database with name ""${config.database}`))
-      let database = require('puffer').instances[config.database]
+      if(system.databases[config.database] === null || system.databases[config.database] === undefined) return reject(new Error(`There is no configured database "${config.database}"`))
+      let database = require('puffer').instances[system.databases[config.database].name]
       server.register([
         {
           register: require('hapi-notification-server'),

@@ -23,7 +23,10 @@ module.exports = (config_path) => {
       sampleInterval: config.server.sampling
     }
   })
-  server.connection({ port: config.server.port })
+  let labels = ['api']
+  if(waker_config.plugins.bell.enabled) labels.push(waker_config.plugins.bell.label)
+  if(waker_config.plugins.postoffice.enabled) labels.push(waker_config.plugins.postoffice.label)
+  server.connection({ port: config.server.port, labels: labels })
   let load = () => {
     let methods = waker_config.methods
     if(methods.model.enabled) require(`${__dirname}/methods/model`)(server, config)
