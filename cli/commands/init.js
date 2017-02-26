@@ -13,6 +13,7 @@ exports.command = 'init'
 exports.desc = 'Create a new server'
 exports.builder = {}
 exports.handler = function (argv) {
+  let path = argv.path
   clear();
   console.log(
     chalk.yellow(
@@ -21,11 +22,11 @@ exports.handler = function (argv) {
   );
   privates.ask()
     .then( (result) => {
-      return privates.process(result)
+      return privates.process(result, path)
     })
     .then( () => {
       console.log("Waker initiation finished!")
-      console.log("Please wait to install core npms ...")
+      return console.log("Please wait to install core npms ...")
       return privates.install_npms()
     })
     .then( () => {
@@ -162,9 +163,9 @@ let privates = {
     ];
     return inquirer.prompt(questions)
   },
-  process(result) {
+  process(result, path = '.') {
     let src = `${__dirname}/../../skeleton/**`,
-        dest = `${__dirname}/../../../..`
+        dest = `${__dirname}/../../../../${path}`
     result.name = "<%= name %>"
     result.cName = "<%= cName %>"
     result.interpolate_regex = '<%=([\\s\\S]+?)%>'
