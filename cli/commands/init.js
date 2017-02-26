@@ -27,7 +27,7 @@ exports.handler = function (argv) {
     .then( () => {
       console.log("Waker initiation finished!")
       console.log("Please wait to install core npms ...")
-      return privates.install_npms()
+      return privates.install_npms(path)
     })
     .then( () => {
       console.log("Core npms are installed. Enjoy! :)")
@@ -181,9 +181,9 @@ let privates = {
         })
     })
   },
-  install_npms() {
+  install_npms(path = '.') {
     return new Promise( (resolve, reject) => {
-      let root = `${__dirname}/../../../..`
+      let root = `${__dirname}/../../../../${path}`
       let reportOptions = {
         err: true,
         stderr: true,
