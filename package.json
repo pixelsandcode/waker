@@ -1,6 +1,6 @@
 {
   "name": "waker",
-  "version": "0.0.26",
+  "version": "0.0.27",
   "description": "Waker is an easy RESTful web service maker",
   "main": "src/server",
   "scripts": {
@@ -50,7 +50,7 @@
     "lout": "^9.2.0",
     "merge-stream": "^1.0.1",
     "moment": "^2.17.1",
-    "odme": "^2.0.1",
+    "odme": "^2.0.3",
     "postoffice": "^1.0.19",
     "puffer": "^1.1.1",
     "redis": "^2.6.5",
