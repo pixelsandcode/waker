@@ -6,9 +6,9 @@ module.exports = (server, config) => {
     if(config.enabled) {
       let env = process.env.NODE_ENV || 'development'
       let lout_options = { endpoint: "/docs" }
-      if(env != 'development')
+      if(config.auth_skip_enviornments.indexOf(env) < 0)
         lout_options.auth = {
-          strategy: 'session',
+          strategy: config.auth_strategy,
           mode: 'required',
           scope: ['developer']
         }

@@ -5,6 +5,8 @@ default:
       api_key: your_key
     lout:
       enabled: false
+      auth_strategy: jwt
+      auth_skip_enviornments: ['development']
     hapi_io:
       enabled: false
     hapi_graceful_pm2:
