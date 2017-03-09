@@ -1,4 +1,6 @@
 default:
+  server:
+    cors: false
   plugins:
     icecreambar:
       enabled: false

@@ -8,11 +8,13 @@ module.exports = (config_path) => {
   let user_plugins = require(`${config_path}/plugins`)
   let user_methods = require(`${config_path}/methods`)
   let modules_loader = require(`${config_path}/modules`)
+  let cors = (waker_config.server.cors == true) ? true : false
   let server = new Hapi.Server({
     connections: {
       load: {
         maxEventLoopDelay: config.server.timeout
-      }
+      },
+      routes: { cors }
     },
     cache: {
       engine: require('catbox-redis'),
