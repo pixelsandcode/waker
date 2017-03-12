@@ -8,7 +8,7 @@ module.exports = (config_path) => {
   let user_plugins = require(`${config_path}/plugins`)
   let user_methods = require(`${config_path}/methods`)
   let modules_loader = require(`${config_path}/modules`)
-  let cors = (waker_config.server.cors == true) ? true : false
+  let cors = (waker_config.server.cors != null && waker_config.server.cors != undefined) ? waker_config.server.cors : false
   let server = new Hapi.Server({
     connections: {
       load: {
