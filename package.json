@@ -1,6 +1,6 @@
 {
   "name": "waker",
-  "version": "0.0.33",
+  "version": "0.0.34",
   "description": "Waker is an easy RESTful web service maker",
   "main": "src/server",
   "scripts": {
@@ -37,7 +37,7 @@
     "hapi-auth-jwt2": "^7.2.4",
     "hapi-graceful-pm2": "^1.0.15",
     "hapi-io": "^0.1.0",
-    "hapi-notification-server": "^2.0.1",
+    "hapi-notification-server": "^2.0.2",
     "hapi-ratelimiter": "^1.3.1",
     "hapi-redis": "^6.0.0",
     "icecreambar": "^4.3.0",
