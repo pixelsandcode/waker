@@ -46,8 +46,12 @@ module.exports = (server, config) => {
     })
   })
 
-  server.method('job.process', (name, fn) => {
-    queue.process(name, (job, done) => {
+  server.method('job.process', (name, instances, fn=null) => {
+    if (fn==null) {
+      fn = instances
+      instances = 1
+    }
+    queue.process(name, instances, (job, done) => {
       Promise.resolve( fn(job) )
         .then( () => done() )
         .catch( (error) => done(error) )
