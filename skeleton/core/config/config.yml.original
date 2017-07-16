@@ -1,7 +1,6 @@
 default:
   app: <%= app %>
   url: <%= url %>
-  scheme: <%= scheme %>
   server:
     sampling: <%= server_sampling %>
     host: <%= server_host %>

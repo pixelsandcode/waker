@@ -7,7 +7,7 @@ module.exports = (server, config) => {
   server.method('bell.post', (data) => {
     return new Promise( (resolve, reject) => {
       let options = {
-        url: `${config.host}:${config.port}/messages`,
+        url: `${config.helpers.bell.host}:${config.helpers.bell.port}/messages`,
         body: JSON.stringify(data),
         method: 'POST'
       }
@@ -22,7 +22,7 @@ module.exports = (server, config) => {
   server.method('bell.register', (data) => {
     return new Promise( (resolve, reject) => {
       let options = {
-        url: `${config.host}:${config.port}/users`,
+        url: `${config.helpers.bell.host}:${config.helpers.bell.port}/users`,
         body: JSON.stringify(data),
         method: 'POST'
       }

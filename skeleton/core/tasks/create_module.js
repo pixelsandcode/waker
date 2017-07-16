@@ -9,7 +9,7 @@ let Yaml     = require('yml')
 let jsYaml   = require('js-yaml')
 
 let update_modules = (app, module) => {
-  let filename = Path.join(__dirname, '../configs/modules.yml'),
+  let filename = Path.join(__dirname, '../config/modules.yml'),
     contents = fs.readFileSync(filename, 'utf8'),
     data     = jsYaml.load(contents)
   if(data.modules === null) data.modules = {}

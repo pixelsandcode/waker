@@ -1,0 +1,4 @@
+default:
+  enabled: false
+  host: http://localhost
+  port: 3400

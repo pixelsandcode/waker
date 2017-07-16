@@ -24,6 +24,7 @@
     "moment-timezone": "^0.5.11",
     "path": "^0.12.7",
     "request": "^2.79.0",
+    "waker": "^<%= version %>",
     "yml": "^0.0.5"
   },
   "devDependencies": {

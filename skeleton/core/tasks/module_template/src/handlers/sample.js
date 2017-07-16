@@ -2,7 +2,7 @@
 
 module.exports = (server, options) => {
 
-  let <%= cName %> = require('../models/main')(server, options)
+  let <%= cName %> = require('../models/sample')(server, options)
 
   return {
     list (request, reply) {

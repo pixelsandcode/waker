@@ -1,0 +1,16 @@
+default:
+  enabled: false
+  database: application
+  mock: true
+  trace: true
+  dump: true
+  dump_path: /path/for/dump/files
+  api_key: your_mailgun_api_key
+  domain: your_domain
+  from: from_on_mail_header
+  label: mail
+  root: /path/to/root/of/mail/templates
+  trigger_events:
+    event_one:
+      template: /path/to/event_one/template
+      subject: event_one_default_subject

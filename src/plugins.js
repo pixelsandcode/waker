@@ -1,7 +1,8 @@
 "use strict"
 
-module.exports = (server, config, waker_config, user_plugins, modules_loader) => {
-  let plugins = waker_config.plugins
+module.exports = (waker, config) => {
+  let plugins = config.plugins
+  let server  = waker.server
   require('./plugins/default')(server, config)
     .then( () => {
       return require('./plugins/icecreambar')(server, plugins.icecreambar)
@@ -22,7 +23,7 @@ module.exports = (server, config, waker_config, user_plugins, modules_loader) =>
       return require('./plugins/hapi_auth_cookie')(server, plugins.hapi_auth_cookie)
     })
     .then( () => {
-      return require('./plugins/hapi_ratelimiter')(server, plugins.hapi_ratelimiter, config.cache)
+      return require('./plugins/hapi_ratelimiter')(server, plugins.hapi_ratelimiter, config.main.cache)
     })
     .then( () => {
       return require('./plugins/bell')(server, plugins.bell, config)
@@ -31,10 +32,10 @@ module.exports = (server, config, waker_config, user_plugins, modules_loader) =>
       return require('./plugins/postoffice')(server, plugins.postoffice, config)
     })
     .then( () => {
-      return require('./plugins/user_plugins')(server, user_plugins)
+      return require('./plugins/user_plugins')(server, waker.customPlugins(server))
     })
     .then( () => {
-      return modules_loader(server)
+      return waker.moduleLoader(server)
     })
     .then( () => {
       server.start( () => {

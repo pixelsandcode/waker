@@ -1,13 +1,13 @@
 let kue     = require('kue')
 let Promise = require('bluebird')
 
-module.exports = (server, config, waker_config) => {
+module.exports = (server, config) => {
 
   let queue = kue.createQueue({
-    prefix: waker_config.kue_prefix,
+    prefix: config.helpers.jons.kue_prefix,
     redis: {
-      port: config.cache.port,
-      host: config.cache.host
+      port: config.main.cache.port,
+      host: config.main.cache.host
     }
   })
 

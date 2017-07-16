@@ -1,0 +1,5 @@
+default:
+  enabled: false
+  namespace: "my_app:limiter:"
+  limit: 10000
+  duration: "10 seconds"

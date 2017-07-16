@@ -4,10 +4,13 @@ let request = require('request')
 
 module.exports = (server, config) => {
 
+  const host = config.helpers.postoffice.host
+  const port = config.helpers.postoffice.port
+
   server.method('postoffice.post', (trigger_point, data) => {
     return new Promise( (resolve, reject) => {
       let options = {
-        url: `${config.host}:${config.port}/v1/triggers/${trigger_point}/post`,
+        url: `${host}:${port}/v1/triggers/${trigger_point}/post`,
         body: JSON.stringify(data),
         method: 'POST'
       }
@@ -22,7 +25,7 @@ module.exports = (server, config) => {
   server.method('postoffice.subscribe', (trigger_point, data) => {
     return new Promise( (resolve, reject) => {
       let options = {
-        url: `${config.host}:${config.port}/v1/triggers/${trigger_point}/subscribe`,
+        url: `${host}:${port}/v1/triggers/${trigger_point}/subscribe`,
         body: JSON.stringify(data),
         method: 'POST'
       }
@@ -37,7 +40,7 @@ module.exports = (server, config) => {
   server.method('postoffice.delete_all_subscribers', (trigger_point) => {
     return new Promise( (resolve, reject) => {
       let options = {
-        url: `${config.host}:${config.port}/v1/triggers/${trigger_point}/subscribers`,
+        url: `${host}:${port}/v1/triggers/${trigger_point}/subscribers`,
         method: 'DELETE'
       }
       request(options, (err, response, body) => {
@@ -51,7 +54,7 @@ module.exports = (server, config) => {
   server.method('postoffice.subscribers', (trigger_point) => {
     return new Promise( (resolve, reject) => {
       let options = {
-        url: `${config.host}:${config.port}/v1/triggers/${trigger_point}/subscribers`,
+        url: `${host}:${port}/v1/triggers/${trigger_point}/subscribers`,
         method: 'GET'
       }
       request(options, (err, response, body) => {
@@ -65,7 +68,7 @@ module.exports = (server, config) => {
   server.method('postoffice.unsubscribe', (email, data) => {
     return new Promise( (resolve, reject) => {
       let options = {
-        url: `${config.host}:${config.port}/v1/emails/${email}/unsubscribe`,
+        url: `${host}:${port}/v1/emails/${email}/unsubscribe`,
         body: JSON.stringify(data),
         method: 'POST'
       }
@@ -80,7 +83,7 @@ module.exports = (server, config) => {
   server.method('postoffice.unsubscribe_list', (email) => {
     return new Promise( (resolve, reject) => {
       let options = {
-        url: `${config.host}:${config.port}/v1/emails/${email}/unsubscribe_list`,
+        url: `${host}:${port}/v1/emails/${email}/unsubscribe_list`,
         method: 'GET'
       }
       request(options, (err, response, body) => {

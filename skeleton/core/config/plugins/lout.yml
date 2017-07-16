@@ -1,0 +1,4 @@
+default:
+  enabled: false
+  auth_strategy: jwt
+  auth_skip_enviornments: ['development']

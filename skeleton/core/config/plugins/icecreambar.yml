@@ -1,0 +1,3 @@
+default:
+  enabled: false
+  api_key: your_key

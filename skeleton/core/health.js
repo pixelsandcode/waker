@@ -37,7 +37,7 @@ let get_privates = (server, configs) => {
           request({
             method: 'GET',
             json: true,
-            url: `http://${configs.searchengine[type].host}:${configs.searchengine[type].port}/${configs.searchengine[type].name}/couchbaseDocument/system_health`
+            url: `http://${configs.main.searchengine[type].host}:${configs.main.searchengine[type].port}/${configs.main.searchengine[type].name}/couchbaseDocument/system_health`
           }, (error, response, body) => {
             console.log(type, error)
             if(error) return resolve(new Error(error))
@@ -72,7 +72,7 @@ module.exports = (server, configs, callback) => {
   }
   let now = moment().format()
   let promises = [], couchbase_state = true, elastic_state = true, xdcr_state = true
-  _.each(configs.databases, (database) => {
+  _.each(configs.main.databases, (database) => {
     let db = require('puffer').instances[database.name]
     promises.push(
       db.upsert('system_health', { created_at: now } )
@@ -89,7 +89,7 @@ module.exports = (server, configs, callback) => {
   Promise.all(promises)
     .then( () => {
       let promises = []
-      _.each(configs.searchengine, (searchengine, type) => {
+      _.each(configs.main.searchengine, (searchengine, type) => {
         promises.push(
           privates.elastic.health(type, now, 0)
             .then( (state) => {

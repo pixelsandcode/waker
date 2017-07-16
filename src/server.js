@@ -2,56 +2,51 @@
 let Hapi = require('hapi')
 let Yaml = require('yml')
 
-module.exports = (config_path) => {
-  let config = Yaml.load(`${config_path}/configs.yml`)
-  let waker_config = Yaml.load(`${config_path}/waker.yml`)
-  let user_plugins = require(`${config_path}/plugins`)
-  let user_methods = require(`${config_path}/methods`)
-  let modules_loader = require(`${config_path}/modules`)
-  let cors = (waker_config.server.cors != null && waker_config.server.cors != undefined) ? waker_config.server.cors : false
+module.exports = (config) => {
+  let cors = (config.hapi.cors != null && config.hapi.cors != undefined) ? config.hapi.cors : false
   let server = new Hapi.Server({
     connections: {
       load: {
-        maxEventLoopDelay: config.server.timeout
+        maxEventLoopDelay: config.main.server.timeout
       },
       routes: { cors }
     },
     cache: {
       engine: require('catbox-redis'),
-      host: config.cache.host,
-      port: config.cache.port
+      host: config.main.cache.host,
+      port: config.main.cache.port
     },
     load: {
-      sampleInterval: config.server.sampling
+      sampleInterval: config.main.server.sampling
     }
   })
   let labels = ['api']
-  if(waker_config.plugins.bell.enabled) labels.push(waker_config.plugins.bell.label)
-  if(waker_config.plugins.postoffice.enabled) labels.push(waker_config.plugins.postoffice.label)
-  server.connection({ port: config.server.port, labels: labels })
-  let load = () => {
-    let methods = waker_config.methods
-    if(methods.model.enabled) require(`${__dirname}/methods/model`)(server, config)
-    if(methods.jobs.enabled) require(`${__dirname}/methods/jobs`)(server, config, methods.jobs)
-    if(methods.redis.enabled) require(`${__dirname}/methods/redis`)(server, config)
-    if(methods.bell.enabled) require(`${__dirname}/methods/bell`)(server, methods.bell)
-    if(methods.postoffice.enabled) require(`${__dirname}/methods/postoffice`)(server, methods.postoffice)
-    require(`${__dirname}/methods/json`)(server)
+  if(config.plugins.bell.enabled)       labels.push(config.plugins.bell.label)
+  if(config.plugins.postoffice.enabled) labels.push(config.plugins.postoffice.label)
+  server.connection({ port: config.main.server.port, labels: labels })
+  const load = () => {
+    let helpers = config.helpers
+    if(helpers.model.enabled) require(`${__dirname}/helpers/model`)(server, config)
+    if(helpers.jobs.enabled)  require(`${__dirname}/helpers/jobs`)(server, config)
+    if(helpers.redis.enabled) require(`${__dirname}/helpers/redis`)(server, config)
+    if(helpers.bell.enabled)  require(`${__dirname}/helpers/bell`)(server, config)
+    if(helpers.postoffice.enabled) require(`${__dirname}/helpers/postoffice`)(server, config)
+    require(`${__dirname}/helpers/json`)(server)
     require(`${__dirname}/decorators/reply`)(server)
-    user_methods(server)
-    require(`./plugins`)(server, config, waker_config, user_plugins, modules_loader)
+    waker.customMethods(server)
+    require(`./plugins`)(waker, config)
   }
-  let callback = (key) => {
+  const callback = (key) => {
     return () => {
-      let connected = config.databases[key].connected = config.databases[key].instance.bucket.connected
-      let name = config.databases[key].name
+      let connected = config.main.databases[key].connected = config.main.databases[key].instance.bucket.connected
+      let name = config.main.databases[key].name
       if(connected)
         console.log(`Connected to Couchbase Bucket ${name}!`)
       else
         console.log(`Error: Couchbase Bucket ${name} is shutdown. Byeee!`)
       let failed = false
-      for(let k in config.databases) {
-        let v = config.databases[k]
+      for(let k in config.main.databases) {
+        let v = config.main.databases[k]
         if(v.connected === null || v.connected === undefined)
           return false
         if(!v.connected) {
@@ -66,15 +61,15 @@ module.exports = (config_path) => {
       load()
     }
   }
-  return {
+  const waker = {
     server,
-    mock: require('./mock')(config, waker_config.methods.model.enabled),
+    mock: require('./mock')(config, config.helpers.model.enabled),
     start() {
-      for(let k in config.databases) {
-        let v = config.databases[k]
+      for(let k in config.main.databases) {
+        let v = config.main.databases[k]
         v.instance = null
         v.callback = callback(k)
-        if(config.databases.application.mock)
+        if(config.main.databases.application.mock)
           v.instance = new require('puffer')(v, true)
         else
           v.instance = new require('puffer')(v)
@@ -82,6 +77,16 @@ module.exports = (config_path) => {
     },
     health(health_script) {
       server.route( require('./routes')(server, config, health_script) )
+    },
+    plugins (plugins) {
+      waker.customPlugins = plugins
+    },
+    methods (methods) {
+      waker.customMethods = methods
+    },
+    setModuleLoader (loader) {
+      waker.moduleLoader = loader
     }
   }
+  return waker
 }

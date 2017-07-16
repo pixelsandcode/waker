@@ -13,7 +13,7 @@ module.exports = () => {
   }
   let root = '../../'
   let name = argv.name
-  let modules = Yaml.load(__dirname + "/../configs/modules.yml").modules
+  let modules = Yaml.load(__dirname + "/../config/modules.yml").modules
   if(!(name === null) && !(name === undefined)) {
     let current = modules[name]
     modules = {}

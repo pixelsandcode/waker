@@ -1,0 +1,8 @@
+default:
+  enabled: false
+  key: your_secret_key
+  expiration: 600 #seconds
+  cache_prefix: "token:"
+  allow_renew: false
+  renew_threshold: 60 #remaining seconds
+  algorithm: HS384

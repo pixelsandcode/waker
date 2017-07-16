@@ -1,6 +1,9 @@
 "use strict"
-let waker = require('waker')(`${__dirname}/configs`)
+const config = require('./config/waker')
+const waker = require('waker')(config)
 
-waker.health( require('./health') )
-
+waker.health(require('./health'))
+waker.plugins(require('./plugins'))
+waker.methods(require('./methods'))
+waker.setModuleLoader(require('./modules.js'))
 waker.start()

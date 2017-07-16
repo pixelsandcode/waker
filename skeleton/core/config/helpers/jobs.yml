@@ -1,0 +1,3 @@
+default:
+  enabled: false
+  kue_prefix: 'kue'
