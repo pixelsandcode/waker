@@ -49,6 +49,7 @@ let methods = (server, config) => {
   })
 
   server.method('jwt.renew', (token, expire = config.expiration) => {
+    if(!token) throw new Error('Token is undefined')
     if(!config.allow_renew) throw new Error('Renewing tokens is not allowed')
     let decoded = Jwt.decode(token, config.key)
     if(decoded.exp == null || decoded.exp == undefined) return token
