@@ -1,6 +1,7 @@
 "use strict";
-let Hapi = require('hapi')
-let Yaml = require('yml')
+const Hapi    = require('hapi')
+const _       = require('lodash')
+const Promise = require('bluebird')
 
 module.exports = (config) => {
   let cors = (config.hapi.cors != null && config.hapi.cors != undefined) ? config.hapi.cors : false
@@ -84,8 +85,22 @@ module.exports = (config) => {
     methods (methods) {
       waker.customMethods = methods
     },
-    setModuleLoader (loader) {
-      waker.moduleLoader = loader
+    moduleLoader (server, config) {
+      let modules = config.modules
+      let defaults = config.defaults
+      return new Promise( (resolve, reject) => {
+        if(modules === null) return resolve(true)
+        let modules_register = _.map(modules, module => {
+          return {
+            register: require(module),
+            options: defaults
+          }
+        })
+        server.register(modules_register, err => {
+          if(err) return reject(err)
+          resolve(true)
+        })
+      })
     }
   }
   return waker

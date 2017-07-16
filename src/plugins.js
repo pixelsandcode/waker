@@ -35,7 +35,7 @@ module.exports = (waker, config) => {
       return require('./plugins/user_plugins')(server, waker.customPlugins(server))
     })
     .then( () => {
-      return waker.moduleLoader(server)
+      return waker.moduleLoader(server, config)
     })
     .then( () => {
       server.start( () => {
