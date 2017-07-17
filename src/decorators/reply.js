@@ -1,6 +1,6 @@
 "use strict"
 const Boom = require('boom')
-const _ = require('lodash')
+const _    = require('lodash')
 
 const BoomTypes = [
   'badData',
@@ -72,12 +72,5 @@ module.exports = (server) => {
   server.decorate('reply', 'crossHtml', function(callback, content) {
     content = content.replace(/"/g, '\\"').replace(/(\r\n|\n|\r)/gm, '')
     return this.response(`${callback}(\"${content}\")`)
-  })
-
-  server.ext('onPreResponse', function(request, reply) {
-    const response = request.response
-    if(!response.isBoom) return reply.continue()
-    if(response.data) response.output.payload.error = response.data
-    return reply(response)
   })
 }

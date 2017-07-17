@@ -1,6 +1,6 @@
 {
   "name": "waker",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Waker is an easy RESTful web service maker",
   "main": "src/server",
   "scripts": {

@@ -41,6 +41,7 @@ module.exports = (waker, config) => {
       server.start( () => {
         console.info(`API server started at ${server.info.uri}`)
       })
+      return true
     })
     .catch( (err) => {
       throw err

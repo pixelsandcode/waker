@@ -27,13 +27,14 @@ module.exports = (config) => {
   server.connection({ port: config.main.server.port, labels: labels })
   const load = () => {
     let helpers = config.helpers
-    if(helpers.model.enabled) require(`${__dirname}/helpers/model`)(server, config)
-    if(helpers.jobs.enabled)  require(`${__dirname}/helpers/jobs`)(server, config)
-    if(helpers.redis.enabled) require(`${__dirname}/helpers/redis`)(server, config)
-    if(helpers.bell.enabled)  require(`${__dirname}/helpers/bell`)(server, config)
-    if(helpers.postoffice.enabled) require(`${__dirname}/helpers/postoffice`)(server, config)
-    require(`${__dirname}/helpers/json`)(server)
-    require(`${__dirname}/decorators/reply`)(server)
+    if(helpers.model.enabled) require('./helpers/model')(server, config)
+    if(helpers.jobs.enabled)  require('./helpers/jobs')(server, config)
+    if(helpers.redis.enabled) require('./helpers/redis')(server, config)
+    if(helpers.bell.enabled)  require('./helpers/bell')(server, config)
+    if(helpers.postoffice.enabled) require('./helpers/postoffice')(server, config)
+    require('./helpers/json')(server)
+    require('./decorators/reply')(server)
+    require('./extentions')(server)
     waker.customMethods(server)
     require(`./plugins`)(waker, config)
   }
