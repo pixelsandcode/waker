@@ -1,9 +1,9 @@
 "use strict"
-let Jwt     = require('jsonwebtoken')
-let Promise = require('bluebird')
-let moment  = require('moment')
+const Jwt     = require('jsonwebtoken')
+const Promise = require('bluebird')
+const moment  = require('moment')
 
-let validate = (server, config) => {
+const validate = (server, config) => {
   return (decoded, request, callback) => {
     let redis = server.plugins['hapi-redis'].client
     let key = `${config.cache_prefix}${request.auth.token}`
@@ -21,7 +21,7 @@ let validate = (server, config) => {
   }
 }
 
-let methods = (server, config) => {
+const methods = (server, config) => {
 
   server.method('jwt.create', (data, expire = config.expiration) => {
     return Jwt.sign(data, config.key, { expiresIn: expire, algorithm: config.algorithm })
@@ -61,6 +61,16 @@ let methods = (server, config) => {
   })
 }
 
+const extentions = (server) => {
+
+  server.ext('onPreResponse', (request, reply) => {
+    const response = request.response;
+    if (!response.isBoom && request.auth && request.auth.token)
+      response.header('Authorization', server.methods.jwt.renew(request.auth.token))
+    reply.continue();
+  })
+}
+
 module.exports = (server, config) => {
   return new Promise( (resolve, reject) => {
     if(config.enabled) {
@@ -74,6 +84,7 @@ module.exports = (server, config) => {
           verifyOptions: { algorithms: [config.algorithm] }
         })
         methods(server, config)
+        extentions(server)
         resolve(true)
       })
     }

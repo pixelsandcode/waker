@@ -5,7 +5,7 @@ module.exports = (server, config) => {
   return new Promise( (resolve, reject) => {
     if(config.enabled) {
       let env = process.env.NODE_ENV || 'development'
-      let lout_options = { endpoint: "/docs" }
+      let lout_options = (config.options) ? config.options : { endpoint: "/docs" }
       if(config.auth_skip_enviornments.indexOf(env) < 0)
         lout_options.auth = {
           strategy: config.auth_strategy,

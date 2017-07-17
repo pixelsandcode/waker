@@ -17,15 +17,15 @@
   "license": "ISC",
   "homepage": "<%= homepage %>",
   "dependencies": {
-    "bluebird": "^3.4.7",
+    "bluebird": "^4.5.0",
     "js-yaml": "^3.8.1",
     "lodash": "^4.17.4",
-    "moment": "^2.17.1",
-    "moment-timezone": "^0.5.11",
+    "moment": "^2.18.1",
+    "moment-timezone": "^0.5.13",
     "path": "^0.12.7",
-    "request": "^2.79.0",
+    "request": "^2.81.0",
     "waker": "^<%= version %>",
-    "yml": "^0.0.5"
+    "yml": "^1.0.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
@@ -45,6 +45,6 @@
     "nodemon": "^1.11.0",
     "path": "^0.12.7",
     "require-all": "^2.2.0",
-    "yargs": "^6.6.0"
+    "yargs": "^8.0.2"
   }
 }
