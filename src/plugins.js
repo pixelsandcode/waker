@@ -11,19 +11,19 @@ module.exports = (waker, config) => {
       return require('./plugins/lout')(server, plugins.lout)
     })
     .then( () => {
-      return require('./plugins/hapi_io')(server, plugins.hapi_io)
+      return require('./plugins/hapi_io')(server, plugins['hapi-io'])
     })
     .then( () => {
-      return require('./plugins/hapi_graceful_pm2')(server, plugins.hapi_graceful_pm2)
+      return require('./plugins/hapi_graceful_pm2')(server, plugins['hapi-graceful-pm2'])
     })
     .then( () => {
-      return require('./plugins/hapi_auth_jwt2')(server, plugins.hapi_auth_jwt2)
+      return require('./plugins/hapi_auth_jwt2')(server, plugins['hapi-auth-jwt2'])
     })
     .then( () => {
-      return require('./plugins/hapi_auth_cookie')(server, plugins.hapi_auth_cookie)
+      return require('./plugins/hapi_auth_cookie')(server, plugins['hapi-auth-cookie'])
     })
     .then( () => {
-      return require('./plugins/hapi_ratelimiter')(server, plugins.hapi_ratelimiter, config.main.cache)
+      return require('./plugins/hapi_ratelimiter')(server, plugins['hapi-ratelimiter'], config.main.cache)
     })
     .then( () => {
       return require('./plugins/bell')(server, plugins.bell, config)
