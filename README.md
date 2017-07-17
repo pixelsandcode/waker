@@ -6,12 +6,12 @@ To use Waker, Couchbase, Elasticsearch and Redis services should be installed an
 XDCR replication between Couchbase buckets and Elasticsearch indexes should be created.
 
 ## Install
-Go to your project's root directory and install Waker:
-`npm install waker`
+To create and manage waker servers, use [waker-cli](https://www.npmjs.com/package/waker-cli)
 
 ## Initiate new web service
-In your project's root directory run:
-`./node_modules/.bin/waker init`
+Using [waker-cli](https://www.npmjs.com/package/waker-cli), following command is used to create new server:
+
+`waker init`
 
 This will ask you some questions about project info and Couchbase, Elasticsearch and Redis services and then creates a pure project structure.
 
@@ -19,14 +19,14 @@ This will ask you some questions about project info and Couchbase, Elasticsearch
 ```
 project_root
 ├── core
-│   ├── configs
+│   ├── config
+│   │   ├── helpers (includes config files for helpers)
+│   │   ├── plugins (includes config files for plugins)
 │   │   ├── configs.yml.original
 │   │   ├── defaults.yml
-│   │   ├── methods.js
-│   │   ├── modules.js
 │   │   ├── modules.yml
-│   │   ├── plugins.js
-│   │   └── waker.yml.original
+│   │   ├── hapi.yml
+│   │   └── waker.js
 │   ├── tasks
 │   │   ├── module_template
 │   │   │   ├── src
@@ -34,6 +34,7 @@ project_root
 │   │   │   │   ├── handlers
 │   │   │   │   ├── models
 │   │   │   │   ├── validators
+│   │   │   │   ├── routes
 │   │   │   │   ├── .npmignore
 │   │   │   │   ├── defaults.yml
 │   │   │   │   ├── main.js
@@ -47,6 +48,8 @@ project_root
 │   │   ├── deploy.js
 │   │   ├── deploy.yml
 │   │   └── link.js
+│   ├── methods.js
+│   ├── plugins.js
 │   ├── gulpfile.js
 │   ├── nodemone.json
 │   ├── package.json
@@ -59,10 +62,9 @@ project_root
 ```
 
 ## Configure your service
-There are two main configuration files which should be configured properly before running server. Follow this steps:
+There are a main configuration files which should be configured properly before running server. Follow this steps:
 
 - Copy `core/configs/configs.yml.original` to `core/configs/configs.yml`
-- Copy `core/configs/waker.yml.original` to `core/configs/waker.yml`
 
 Now you can edit the new files to configure your server.
 
@@ -126,16 +128,24 @@ To set configurations correctly refer to plugins' official documentations and to
 
 ## Running server
 To run server in development environment, go to `core` directory and run:
+
 `NODE_ENV=development gulp api:run`
+
 and by node itself, run:
+
 `NODE_ENV=development node ./server.js`
 
+Also server can be run using `waker-cli`. To run following command it's not required to be in `core` directory:
+
+`waker run`
+
+
 ## Add your Hapi.js plugins
-`core/configs/plugins.js` is holding an array of Hapi.js plugins registration objects. 
+`core/plugins.js` is holding an array of Hapi.js plugins registration objects. 
 Any plugin which is needed on your project, can be added to the file.
-For example to add plugin `hapi-x-plugin`, edit `core/configs/plugins.js` like:
+For example to add plugin `hapi-x-plugin`, edit `core/plugins.js` like:
 ```javascript
-module.exports = [
+module.exports = (server) => [
   {
     register: require('hapi-x-plugin'),
     options: {
@@ -146,8 +156,8 @@ module.exports = [
 ```
 
 ## Add server methods
-If there are methods which are related to core module, they can be added to `core/configs/methods.js`.
-For example to add method `core.say_hello`, edit `core/configs/methods.js` like:
+If there are methods which are related to core module, they can be added to `core/methods.js`.
+For example to add method `core.say_hello`, edit `core/methods.js` like:
 ```javascript
 module.exports = (server) => {
   server.method('core.say_hello', () => {
@@ -161,8 +171,16 @@ To create new modules in project, follow the steps:
 - Go to `core` directory
 - Run `gulp api:module:create -n <your module name>`
 
+waker-cli command:
+
+`waker add module -n <your module name>`
+
 For example if you want to create a module with name `users`, you should run:
 - `gulp api:module:create -n users`
+
+OR
+
+- `waker add module -n users`
 
 ## Link modules to core module
 Linking modules is done automatically. Also you can link modules to core module manually by running the following command:
@@ -186,7 +204,7 @@ For example, to deploy on production, run:
 ## How to implement your service
 Assume that you want to implement an API to register users in your system. To implement your API, you should create a module first.
 Lets call the module `users`. So we should go to project's core directory and run:
-- `gulp api:module:create -n users`
+- `waker add module -n users`
 
 Running this command will create a new module named `users` in your project structure. Your project structure will be sth like:
 ```
@@ -199,6 +217,7 @@ project_root
         │   ├── handlers
         │   ├── models
         │   ├── validators
+        │   ├── routes
         │   ├── .npmignore
         │   ├── defaults.yml
         │   ├── main.js
@@ -224,42 +243,42 @@ Environments directory comes with two default `.js` files.
 `users/environments/development.js` should be used to implement `development` environment specific features. 
 If you want to implement some features only in e.g. staging environment, 
 you should create `users/environments/staging.js` file and have same signature as `users/environments/development.js` has.
-Then when you run server with `NODE_ENV=staging gulp api:run` command, your implementation in `staging.js` file will be loaded to server.
+Then when you run server with `NODE_ENV=staging gulp api:run` command or `waker run -e staging`, your implementation in `staging.js` file will be loaded to server.
 
 ### src/handlers
 ```
 handlers
-└── main.js
+└── sample.js
 ```
 
-Handlers directory comes with default `main.js` file. 
+Handlers directory comes with default `sample.js` file. 
 Files inside the directory are implementing handler functions of Hapi.js routes.
-`users/handlers/main.js` defines signature of handler files. You can define as many as needed handler files. 
-The handler files and implemented functions inside them, will be used in `users/routes.js` file and will be assigned to `users` module's routes.
-Read content of `users/handlers/main.js` and `users/routes.js` files to see how it is implemented and used by routes.
+`users/handlers/sample.js` defines signature of handler files. You can define as many as needed handler files. 
+The handler files and implemented functions inside them, will be used in files in `users/routes` directory and will be assigned to `users` module's routes.
+Read content of `users/handlers/sample.js` and `users/routes/sample.js` files to see how it is implemented and used by routes.
 
 ### src/models
 ```
 models
-└── main.js
+└── sample.js
 ```
 
-Handlers directory comes with default `main.js` file. 
+Handlers directory comes with default `sample.js` file. 
 Files inside the directory are implementing model classes which are used to manage data.
-`users/models/main.js` defines signature of model files. You can define as many as needed model files.
+`users/models/sample.js` defines signature of model files. You can define as many as needed model files.
 The model files and implemented classes inside them, will be used by handlers to set/get data from/to databases.
-Read content of `users/models/main.js` and `users/handlers/main.js` files to see how they are implemented and connected to each other.
+Read content of `users/models/sample.js` and `users/handlers/sample.js` files to see how they are implemented and connected to each other.
 
 ### src/validators
 ```
 validators
-└── mainValidator.js
+└── sampleValidator.js
 ```
 
-Validators directory comes with default `mainValidator.js` file.
+Validators directory comes with default `sampleValidator.js` file.
 Files inside the directory are implementing an object which will be used to validate Hapi.js routes' data.
-`users/validators/mainValidator.js` defines signature of validator files. You can define as many as needed validator files.
-Read content of `users/validators/mainValidator.js` and `users/routes.js` files to see how the validator is implemented and used by routes.
+`users/validators/sampleValidator.js` defines signature of validator files. You can define as many as needed validator files.
+Read content of `users/validators/sampleValidator.js` and `users/routes/sample.js` files to see how the validator is implemented and used by routes.
 
 ### src/defaults.yml
 Module related default values, should be defined inside `src/defaults.yml` file. 
@@ -287,16 +306,16 @@ module.exports = (server, options) => {
 
 Define as many as needed server methods inside `src/methods.js`.
 
-### src/routes.js
-Module's routes should be defined inside `src/routes.js`. 
-The file comes with a default route, implemented inside, to help you know how module's routes should be implemented.
-As we talked before, handler and validator files is used by routes. So the files are linked to `src/routes.js` file.
+### src/routes
+Module's routes should be defined inside `src/routes` directory. 
+There is a sample route file which comes with a default route, implemented inside, to help you know how module's routes should be implemented.
+As we talked before, handler and validator files is used by routes. So the files are linked to files inside `src/routes` directory.
 The following snippet is an example of implementing new route `POST /v1/users/login`:
 ```javascript
 module.exports = (server, options) => {
 
-  const Users = require('./handlers/main')(server, options)
-  const UsersValidator = require('./validators/mainValidator')(options)
+  const Users = require('./handlers/sample')(server, options)
+  const UsersValidator = require('./validators/sampleValidator')(options)
 
   return [
     {
@@ -314,3 +333,33 @@ module.exports = (server, options) => {
 ```
 
 `Users.login` handler and `UserValidator.login` validator should be implemented to make the new route to work.
+
+Every time a route file is created in `src/routes` directory, its name should be added to `src/routes.js` file.
+The following snippet is implementation of the `routes.js`:
+
+```javascript
+module.exports = (server, options) => {
+  const entities = [
+    'sample'
+  ]
+  let routes = []
+  _.each(entities, entity => {
+    routes = _.concat(routes, require(`./routes/${entity}`)(server, options))
+  })
+  return routes
+}
+```
+For example if you have a route file named `profile.js`, `profile` keyword should be added to `entities` array.
+```javascript
+module.exports = (server, options) => {
+  const entities = [
+    'sample',
+    'profile'
+  ]
+  let routes = []
+  _.each(entities, entity => {
+    routes = _.concat(routes, require(`./routes/${entity}`)(server, options))
+  })
+  return routes
+}
+```
