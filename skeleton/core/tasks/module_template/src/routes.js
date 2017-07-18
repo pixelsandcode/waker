@@ -1,12 +1,17 @@
-const _ = require('lodash')
+const _       = require('lodash')
+const fs      = require('fs')
+const Promise = require('bluebird')
 
 module.exports = (server, options) => {
-  const entities = [
-    'sample'
-  ]
-  let routes = []
-  _.each(entities, entity => {
-    routes = _.concat(routes, require(`./routes/${entity}`)(server, options))
+  return new Promise((resolve, reject) => {
+    fs.readdir(`${__dirname}/routes`, (err, files) => {
+      if (err) return reject(new Error('there is an issue when trying to load routes'))
+      let routes = []
+      _.each(files, file => {
+        if(file.indexOf('.js') > -1)
+          routes = _.concat(routes, require(`./routes/${file}`)(server, options))
+      })
+      resolve(routes)
+    })
   })
-  return routes
 }

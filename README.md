@@ -333,33 +333,3 @@ module.exports = (server, options) => {
 ```
 
 `Users.login` handler and `UserValidator.login` validator should be implemented to make the new route to work.
-
-Every time a route file is created in `src/routes` directory, its name should be added to `src/routes.js` file.
-The following snippet is implementation of the `routes.js`:
-
-```javascript
-module.exports = (server, options) => {
-  const entities = [
-    'sample'
-  ]
-  let routes = []
-  _.each(entities, entity => {
-    routes = _.concat(routes, require(`./routes/${entity}`)(server, options))
-  })
-  return routes
-}
-```
-For example if you have a route file named `profile.js`, `profile` keyword should be added to `entities` array.
-```javascript
-module.exports = (server, options) => {
-  const entities = [
-    'sample',
-    'profile'
-  ]
-  let routes = []
-  _.each(entities, entity => {
-    routes = _.concat(routes, require(`./routes/${entity}`)(server, options))
-  })
-  return routes
-}
-```
