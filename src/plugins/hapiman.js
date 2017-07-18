@@ -2,17 +2,12 @@
 let Promise = require('bluebird')
 
 module.exports = (server, config) => {
-  return new Promise( (resolve, reject) => {
+  config = config.plugins.hapiman
+  return new Promise((resolve, reject) => {
     if (config.enabled)
       server.register([
         {
-          register: require('hapi-io'),
-          options: {
-            auth: {
-              mode: 'try',
-              strategies : ['jwt', 'session']
-            }
-          }
+          register: require('hapiman')
         }
       ], (err) => {
         if (err) return reject(err)

@@ -2,17 +2,18 @@
 let Promise = require('bluebird')
 let _       = require('lodash')
 
-module.exports = (server, config, system) => {
+module.exports = (server, config) => {
+  const bellConfig = config.plugins.bell
   return new Promise( (resolve, reject) => {
-    if(config.enabled) {
-      if(system.main.databases[config.database] === null || system.main.databases[config.database] === undefined) return reject(new Error(`There is no configured database "${config.database}"`))
-      let database = require('puffer').instances[system.main.databases[config.database].name]
+    if(bellConfig.enabled) {
+      if(config.main.databases[bellConfig.database] === null || config.main.databases[bellConfig.database] === undefined) return reject(new Error(`There is no configured database "${bellConfig.database}"`))
+      let database = require('puffer').instances[config.main.databases[bellConfig.database].name]
       server.register([
         {
           register: require('hapi-notification-server'),
           options: {
             database,
-            config
+            config: bellConfig
           }
         }
       ], (err) => {

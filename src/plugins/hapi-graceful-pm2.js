@@ -2,6 +2,7 @@
 let Promise = require('bluebird')
 
 module.exports = (server, config) => {
+  config = config.plugins['hapi-graceful-pm2']
   return new Promise( (resolve, reject) => {
     if(config.enabled)
       server.register([

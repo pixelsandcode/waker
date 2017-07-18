@@ -26,13 +26,7 @@ module.exports = (config) => {
   if(config.plugins.postoffice.enabled) labels.push(config.plugins.postoffice.label)
   server.connection({ port: config.main.server.port, labels: labels })
   const load = () => {
-    let helpers = config.helpers
-    if(helpers.model.enabled) require('./helpers/model')(server, config)
-    if(helpers.jobs.enabled)  require('./helpers/jobs')(server, config)
-    if(helpers.redis.enabled) require('./helpers/redis')(server, config)
-    if(helpers.bell.enabled)  require('./helpers/bell')(server, config)
-    if(helpers.postoffice.enabled) require('./helpers/postoffice')(server, config)
-    require('./helpers/json')(server)
+    require('./helpers')(server, config)
     require('./decorators/reply')(server)
     require('./extentions')(server)
     waker.customMethods(server)

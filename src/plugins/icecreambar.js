@@ -2,6 +2,7 @@
 let Promise = require('bluebird')
 
 module.exports = (server, config) => {
+  config = config.plugins.icecreambar
   return new Promise( (resolve, reject) => {
     if(config.enabled)
       server.register([

@@ -72,6 +72,7 @@ const extentions = (server) => {
 }
 
 module.exports = (server, config) => {
+  config = config.plugins['hapi-auth-jwt2']
   return new Promise( (resolve, reject) => {
     if(config.enabled) {
       server.register([

@@ -2,6 +2,7 @@
 let Promise = require('bluebird')
 
 module.exports = (server, config) => {
+  config = config.plugins.lout
   return new Promise( (resolve, reject) => {
     if(config.enabled) {
       let env = process.env.NODE_ENV || 'development'
