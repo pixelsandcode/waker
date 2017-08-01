@@ -1,0 +1,1 @@
+couchbase.typeSelector: org.elasticsearch.transport.couchbase.capi.RegexTypeSelector

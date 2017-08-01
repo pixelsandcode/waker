@@ -1,0 +1,14 @@
+{
+  "apps": [
+    {
+      "exec_mode": "fork_mode",
+      "script": "./core/server.js",
+      "name": "<%= app %>",
+      "env": {
+        "PORT_INDEX": 0
+      },
+      "error_file": "./logs/<%= app %>.err.log",
+      "out_file": "./logs/<%= app %>.out.log"
+    }
+  ]
+}
