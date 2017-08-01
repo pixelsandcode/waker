@@ -14,8 +14,8 @@ module.exports = (server, config) => {
           options: {
             database,
             config: postofficeConfig,
-            url: system.main.url,
-            scheme: system.main.scheme
+            url: config.main.url,
+            scheme: config.main.scheme
           }
         }
       ], (err) => {
