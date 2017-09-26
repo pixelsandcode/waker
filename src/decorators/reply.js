@@ -46,8 +46,11 @@ module.exports = (server) => {
   })
 
   server.decorate('reply', 'success', function(data = null) {
-    if (data === null || data === undefined) {
+    if (data === null || data === undefined || data === true) {
       return this.nice({success: true})
+    }
+    else if (data === false) {
+      return this.nice({success: false})
     }
     data.success = true
     return this.nice(data)

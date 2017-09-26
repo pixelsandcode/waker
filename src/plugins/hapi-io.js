@@ -11,7 +11,7 @@ module.exports = (server, config) => {
           options: {
             auth: {
               mode: 'try',
-              strategies : ['jwt', 'session']
+              strategies : ['jwt']
             }
           }
         }
