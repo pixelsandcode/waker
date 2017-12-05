@@ -59,15 +59,40 @@ const methods = (server, config) => {
     delete decoded.exp
     return server.methods.jwt.create(decoded, expire)
   })
+
+  server.method('jwt.isValid', (token) => {
+    return new Promise((resolve, reject) => {
+      let redis = server.plugins['hapi-redis'].client
+      let key = `${config.cache_prefix}${token}`
+      redis.get(key, (err, value) => {
+        if(err) return reject(Error('Can not validate because cache server is not responsive'))
+        if(!(decoded.exp == null || decoded.exp == undefined)) {
+          if(value === null) return resolve(true)
+          resolve(false)
+        }
+        else {
+          if(value === null) return resolve(false)
+          resolve(true)
+        }
+      })
+    })
+  })
 }
 
-const extentions = (server) => {
+const extentions = (server, config) => {
 
   server.ext('onPreResponse', (request, reply) => {
-    const response = request.response;
-    if (!response.isBoom && request.auth && request.auth.token)
-      response.header('Authorization', server.methods.jwt.renew(request.auth.token))
-    reply.continue();
+    if(!config.allow_renew) return reply.continue()
+    const response = request.response
+    if (!response.isBoom && request.auth && request.auth.token) {
+      server.methods.jwt.isValid(request.auth.token)
+        .then(isValid => {
+          if(isValid)
+            response.header('Authorization', server.methods.jwt.renew(request.auth.token))
+          reply.continue()
+        })
+    }
+    reply.continue()
   })
 }
 
@@ -85,7 +110,7 @@ module.exports = (server, config) => {
           verifyOptions: { algorithms: [config.algorithm] }
         })
         methods(server, config)
-        extentions(server)
+        extentions(server, config)
         resolve(true)
       })
     }

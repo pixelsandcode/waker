@@ -4,7 +4,7 @@ let Promise = require('bluebird')
 module.exports = (server, config) => {
 
   let queue = kue.createQueue({
-    prefix: config.helpers.jons.kue_prefix,
+    prefix: config.helpers.jobs.kue_prefix,
     redis: {
       port: config.main.cache.port,
       host: config.main.cache.host
