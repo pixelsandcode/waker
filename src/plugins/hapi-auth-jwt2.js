@@ -66,6 +66,7 @@ const methods = (server, config) => {
       let key = `${config.cache_prefix}${token}`
       redis.get(key, (err, value) => {
         if(err) return reject(Error('Can not validate because cache server is not responsive'))
+        let decoded = Jwt.decode(token, config.key)
         if(!(decoded.exp == null || decoded.exp == undefined)) {
           if(value === null) return resolve(true)
           resolve(false)
