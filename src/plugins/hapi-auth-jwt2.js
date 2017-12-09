@@ -85,13 +85,8 @@ const extentions = (server, config) => {
   server.ext('onPreResponse', (request, reply) => {
     if(!config.allow_renew) return reply.continue()
     const response = request.response
-    if (!response.isBoom && request.auth && request.auth.token) {
-      server.methods.jwt.isValid(request.auth.token)
-        .then(isValid => {
-          if(isValid)
-            response.header('Authorization', server.methods.jwt.renew(request.auth.token))
-          reply.continue()
-        })
+    if (!response.isBoom && request.auth && request.auth.token && !request.isLogout) {
+      response.header('Authorization', server.methods.jwt.renew(request.auth.token))
     }
     reply.continue()
   })
