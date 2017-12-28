@@ -4,7 +4,9 @@
   "description": "<%= app %> system",
   "main": "./server",
   "scripts": {
-    "start": "gulp api:run"
+    "start": "gulp api:run",
+    "install-modules": "npm install && gulp api:link --stage=deploy",
+    "install-configs": "cd config && cp config.yml.original config.yml"
   },
   "repository": {
     "type": "git",
@@ -46,9 +48,5 @@
     "path": "^0.12.7",
     "require-all": "^2.2.0",
     "yargs": "^8.0.2"
-  },
-  "scripts": {
-    "install-modules": "npm install && gulp api:link --stage=deploy",
-    "install-configs": "cd config && cp config.yml.original config.yml"
   }
 }

@@ -8,5 +8,8 @@
   "model": {
     "puffer": "1.1.1",
     "odme": "2.0.4"
+  },
+  "logger": {
+    "chalk": "2.3.0"
   }
 }
