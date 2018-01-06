@@ -76,4 +76,14 @@ module.exports = (server) => {
     content = content.replace(/"/g, '\\"').replace(/(\r\n|\n|\r)/gm, '')
     return this.response(`${callback}(\"${content}\")`)
   })
+
+  server.decorate('reply', 'error', function(err = {}, data = {}) {
+    const api = {api: `${this.request.method.toUpperCase()} ${this.request.path}`}
+    if (err.isBoom) {
+      err.data = _.merge(data, api)
+      return this.response(err)
+    }
+    _.merge(data, api)
+    return this.response(Boom.badImplementation('something went wrong', data))
+  })
 }

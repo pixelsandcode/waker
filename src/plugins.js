@@ -23,7 +23,7 @@ module.exports = (waker, config) => {
   Promise.reduce(promises, (total, func) => {
     return func()
   }, {}).then(() => {
-    return require('./plugins/user_plugins')(server, waker.customPlugins(server))
+    return require('./plugins/user_plugins')(server, waker.customPlugins(server, config.defaults))
   }).then(() => {
     return waker.moduleLoader(server, config)
   }).then(() => {

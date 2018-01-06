@@ -9,6 +9,7 @@ module.exports = (server, options, next) => {
     .then( routes => {
       server.route(routes)
       require('./methods')(server, options)
+      require('./jobs')(server, options)
       require('./environments/main')(server, options)
       next()
     })

@@ -13,6 +13,9 @@ snapshots
 .DS_Store
 shared
 
+#local configs
+*/**/config.yml
+
 # Runtime data
 pids
 *.pid
@@ -39,3 +42,7 @@ node_modules
 
 # Idea files
 .idea
+
+# Elasticsearch & Couchbase data directories
+esdata
+cbdata

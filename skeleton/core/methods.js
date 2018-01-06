@@ -1,5 +1,5 @@
 "use strict"
 
-module.exports = (server) => {
+module.exports = (server, options) => {
 
 }

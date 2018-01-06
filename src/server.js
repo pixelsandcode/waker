@@ -29,7 +29,7 @@ module.exports = (config) => {
     require('./helpers')(server, config)
     require('./decorators/reply')(server)
     require('./extentions')(server)
-    waker.customMethods(server)
+    waker.customMethods(server, config.defaults)
     require(`./plugins`)(waker, config)
   }
   const callback = (key) => {
