@@ -12,6 +12,17 @@ module.exports = (server, config) => {
             auth: {
               mode: 'try',
               strategies : ['jwt']
+            },
+            socketio: {
+              handlePreflightRequest: function (req, res) {
+                var headers = {
+                  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+                  'Access-Control-Allow-Origin': req.headers.origin,
+                  'Access-Control-Allow-Credentials': true
+                };
+                res.writeHead(200, headers);
+                res.end();
+              }
             }
           }
         }
