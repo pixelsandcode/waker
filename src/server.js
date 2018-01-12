@@ -24,7 +24,12 @@ module.exports = (config) => {
   let labels = ['api']
   if(config.plugins.bell.enabled)       labels.push(config.plugins.bell.label)
   if(config.plugins.postoffice.enabled) labels.push(config.plugins.postoffice.label)
-  server.connection({ port: config.main.server.port, labels: labels })
+  let options = {
+    port: config.main.server.port,
+    labels: labels
+  }
+  if(config.hapi.connection) options = _.merge(options, config.hapi.connection)
+  server.connection(options)
   const load = () => {
     require('./helpers')(server, config)
     require('./decorators/reply')(server)
