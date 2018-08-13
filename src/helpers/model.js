@@ -21,7 +21,11 @@ module.exports = (server, config) => {
       static get (key, mask) {
         return super.get(key, mask)
           .then(result => {
-            if(result instanceof Error) throw Boom.notFound(`Object with key '${key}' not found.`)
+            if (result instanceof Error) {
+              if (result.isBoom) throw result
+              console.log('Model Error (get):\n', result)
+              throw Boom.badImplementation(`Something went wrong while getting object with key '${key}'.`)
+            }
             return result
           })
       }
@@ -29,7 +33,11 @@ module.exports = (server, config) => {
       create (mask) {
         return super.create(mask)
           .then(result => {
-            if(result instanceof Error) throw Boom.conflict("The object is already exists.")
+            if (result instanceof Error) {
+              if (result.isBoom) throw result
+              console.log('Model Error (create):\n', result)
+              throw Boom.badImplementation("Something went wrong while creating object.")
+            }
             return result
           })
       }
@@ -37,7 +45,11 @@ module.exports = (server, config) => {
       update (mask) {
         return super.update(mask)
           .then(result => {
-            if(result instanceof Error) throw Boom.badImplementation(`Something went wrong while updating object with key ${this.key}.`)
+            if (result instanceof Error) {
+              if (result.isBoom) throw result
+              console.log('Model Error (update):\n', result)
+              throw Boom.badImplementation(`Something went wrong while updating object with key ${this.key}.`)
+            }
             return result
           })
       }
@@ -45,7 +57,11 @@ module.exports = (server, config) => {
       remove (key) {
         return super.remove(key)
           .then(result => {
-            if(result instanceof Error) throw Boom.badImplementation(`Something went wrong while removing object with key ${key}.`)
+            if (result instanceof Error) {
+              if (result.isBoom) throw result
+              console.log('Model Error (remove):\n', result)
+              throw Boom.badImplementation(`Something went wrong while removing object with key ${key}.`)
+            }
             return result
           })
       }
@@ -53,7 +69,11 @@ module.exports = (server, config) => {
       static find (keys, mask, asObject) {
         return super.find(keys, mask, asObject)
           .then(result => {
-            if(result instanceof Error) throw Boom.badImplementation("Something went wrong while finding data.")
+            if (result instanceof Error) {
+              if (result.isBoom) throw result
+              console.log('Model Error (find):\n', result)
+              throw Boom.badImplementation("Something went wrong while finding data.")
+            }
             return result
           })
       }
