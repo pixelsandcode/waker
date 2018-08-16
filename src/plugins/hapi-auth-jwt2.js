@@ -48,9 +48,10 @@ const methods = (server, config) => {
     }
   })
 
-  server.method('jwt.renew', (token, expire = config.expiration) => {
+  server.method('jwt.renew', (token, routePlugins, expire = config.expiration) => {
     if(!token) throw new Error('Token is undefined')
-    if(!config.allow_renew) throw new Error('Renewing tokens is not allowed')
+    if((!config.allow_renew && routePlugins.jwtRenew == undefined) || (routePlugins.jwtRenew == false))
+      throw new Error('Renewing tokens is not allowed')
     let decoded = Jwt.decode(token, config.key)
     if(decoded.exp == null || decoded.exp == undefined) return token
     if( (decoded.exp - moment().unix()) > config.renew_threshold ) return token
@@ -83,11 +84,13 @@ const methods = (server, config) => {
 const extentions = (server, config) => {
 
   server.ext('onPreResponse', (request, reply) => {
-    if(!config.allow_renew) return reply.continue()
+    const routePlugins = request.route.settings.plugins
+    if((!config.allow_renew && routePlugins.jwtRenew == undefined) || (routePlugins.jwtRenew == false))
+      return reply.continue()
     const response = request.response
-    if (!response.isBoom && request.auth && request.auth.token && !request.isLogout) {
-      response.header('Authorization', server.methods.jwt.renew(request.auth.token))
-    }
+    if(!response.isBoom && request.auth && request.auth.token && !request.isLogout)
+      if(config.allow_renew && !routePlugins.jwtRenew)
+        response.header('Authorization', server.methods.jwt.renew(request.auth.token, routePlugins))
     reply.continue()
   })
 }
