@@ -4,7 +4,8 @@ let fs       = require('fs')
 let gulp     = require('gulp')
 let exec     = require('gulp-exec')
 let template = require('gulp-template')
-let util     = require('gulp-util')
+let colors   = require('ansi-colors')
+let log      = require('fancy-log')
 let Yaml     = require('yml')
 let jsYaml   = require('js-yaml')
 
@@ -46,5 +47,5 @@ module.exports = () => {
       })
   }
   else
-    util.log( util.colors.red(`${name} already exists!`) )
+    log( colors.red(`Module with the name '${name}' already exists!`) )
 }
