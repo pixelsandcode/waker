@@ -1,15 +1,15 @@
 {
   "jobs": {
-    "kue": "0.11.5"
+    "kue": "0.11.6"
   },
   "json": {
     "json-mask": "0.3.8"
   },
   "model": {
-    "puffer": "1.1.1",
-    "odme": "2.0.4"
+    "puffer": "1.1.2",
+    "odme": "2.0.5"
   },
   "logger": {
-    "chalk": "2.3.0"
+    "chalk": "2.4.1"
   }
 }

@@ -8,12 +8,12 @@
   },
   "author": "<%= author %>",
   "dependencies": {
-    "bluebird": "^3.4.7",
-    "boom": "^4.2.0",
+    "bluebird": "^3.5.1",
+    "boom": "^7.2.0",
     "joi": "^10.2.2",
-    "lodash": "^4.17.4",
-    "moment": "^2.17.1",
-    "moment-timezone": "^0.5.11",
+    "lodash": "^4.17.10",
+    "moment": "^2.22.2",
+    "moment-timezone": "^0.5.21",
     "yml": "^1.0.0"
   },
   "devDependencies": {
